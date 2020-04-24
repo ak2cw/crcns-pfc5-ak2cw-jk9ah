@@ -116,7 +116,7 @@ def getpersonavgs_ctrl(group, filep):
 
 
 
-def getpersonavgs_pfc(group):
+def getpersonavgs_pfc(group, filep):
 
 
     allpfcs = np.zeros(385)#231 for proc
