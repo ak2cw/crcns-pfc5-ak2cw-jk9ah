@@ -10,7 +10,7 @@ import numpy as np
 from scipy.io import loadmat
 
 
-def read_neuron_trial(fp): #returns the EEG data during one trial at different time points of exp
+def read_neuron_trial(fp): #returns the EEG data at different time points of exp
     d = fp['trial'] #get trials data
     numtimes = 0
     for x in d: #get number of time points
@@ -44,7 +44,7 @@ def read_neuron_time(fp): #returns the time stamps for the EEG data
 
 def getpersonavgs_ctrl(group, filep):
 
-    allctrls = np.zeros(385)
+    allctrls = np.zeros(385) #number of time stamps
 
     if (group == 0): #if all control
         for i in range (1,21): #runs for all subjects
@@ -54,13 +54,13 @@ def getpersonavgs_ctrl(group, filep):
                     filepath = filep +  "ctrl%s/data_derived.mat"%(i)
                 hf = h5py.File(filepath, 'r')
 
-                #retrieves trial data for each stage of experiment
+                #retrieves average trial data for encoding phase
                 enctrialsavgs = read_neuron_trial(hf['encmain'])
 
                 #retrieves time stamp data
                 enctimes = read_neuron_time(hf['encmain'])
 
-                #add on every trial
+                #add on each subject
                 allctrls = allctrls + enctrialsavgs
 
         allctrls = allctrls/21 #average across all controls
@@ -77,13 +77,13 @@ def getpersonavgs_ctrl(group, filep):
                     filepath = filep +  "ctrl%s/data_derived.mat"%(i)
                 hf = h5py.File(filepath, 'r')
 
-                #retrieves trial data for each stage of experiment
+                #retrieves average trial data for encoding phase
                 enctrialsavgs = read_neuron_trial(hf['encmain'])
 
                 #retrieves time stamp data
                 enctimes = read_neuron_time(hf['encmain'])
 
-                #add on every trial
+                #add on each subject
                 mctrls = mctrls + enctrialsavgs
 
         mctrls = mctrls/11 #average across male controls
@@ -100,16 +100,16 @@ def getpersonavgs_ctrl(group, filep):
                     filepath = filep +  "ctrl%s/data_derived.mat"%(i)
                 hf = h5py.File(filepath, 'r')
 
-                #retrieves trial data for each stage of experiment
+                #retrieves average trial data for encoding phase
                 enctrialsavgs = read_neuron_trial(hf['encmain'])
 
                 #retrieves time stamp data
                 enctimes = read_neuron_time(hf['encmain'])
 
-                #add on every trial
+                #add on every subject
                 fctrls = fctrls + enctrialsavgs
 
-        fctrls = fctrls/9 #average across male controls
+        fctrls = fctrls/9 #average across female controls
         return fctrls, enctimes
 
     return 0,0
@@ -119,7 +119,7 @@ def getpersonavgs_ctrl(group, filep):
 def getpersonavgs_pfc(group, filep):
 
 
-    allpfcs = np.zeros(385)#231 for proc
+    allpfcs = np.zeros(385)
 
 
     if (group == 0): #if all pfc
@@ -131,13 +131,13 @@ def getpersonavgs_pfc(group, filep):
             hf = h5py.File(filepath, 'r')
 
 
-            #retrieves trial data for each stage of experiment
+            #retrieves average trial data for encoding phase
             enctrialsavgs = read_neuron_trial(hf['encmain'])
 
             #retrieves time stamp data
             enctimes = read_neuron_time(hf['encmain'])
 
-            #add on every trial
+            #add on each subject
             allpfcs = allpfcs + enctrialsavgs
 
         allpfcs = allpfcs/14 #average across all pfc
@@ -155,16 +155,16 @@ def getpersonavgs_pfc(group, filep):
             hf = h5py.File(filepath, 'r')
 
 
-            #retrieves trial data for each stage of experiment
+            #retrieves average trial data for encoding phase
             enctrialsavgs = read_neuron_trial(hf['encmain'])
 
             #retrieves time stamp data
             enctimes = read_neuron_time(hf['encmain'])
 
-            #add on every trial
+            #add on each person
             mpfcs = mpfcs + enctrialsavgs
 
-        mpfcs = mpfcs/5 #average across all pfc
+        mpfcs = mpfcs/5 #average across male pfc
         return mpfcs, enctimes
 
     fpfcs = np.zeros(385)
@@ -179,16 +179,21 @@ def getpersonavgs_pfc(group, filep):
             hf = h5py.File(filepath, 'r')
 
 
-            #retrieves trial data for each stage of experiment
+            #retrieves average trial data for encoding phase
             enctrialsavgs = read_neuron_trial(hf['encmain'])
 
             #retrieves time stamp data
             enctimes = read_neuron_time(hf['encmain'])
 
-            #add on every trial
+            #add on each person
             fpfcs = fpfcs + enctrialsavgs
 
-        fpfcs = fpfcs/9 #average across all pfc
+        fpfcs = fpfcs/9 #average across female pfc
         return fpfcs, enctimes
 
     return 0,0
+
+
+
+
+
